@@ -18,7 +18,6 @@ const Board = (props) => {
       .then( (response) => {
         // get list of cards
         const apiCardsList = response.data;
-        console.log(response.data);
         setCardsList(apiCardsList);
       })
       .catch( (error) => {
@@ -32,8 +31,8 @@ const Board = (props) => {
     
     let cardsList = [];
 
-    for(const item of cards) {
-      cardsList.push(<Card text={item.card ? item.card.text : item.text} emojiText={item.card ? item.card.emoji : item.emoji}/>);
+    for(const [i, item] of cards.entries()) {
+      cardsList.push(<Card id = {item.card ? item.card.id : i} text={item.card ? item.card.text : item.text} emojiText={item.card ? item.card.emoji : item.emoji}/>);
     }
     return cardsList;
   }
