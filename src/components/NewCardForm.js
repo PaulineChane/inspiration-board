@@ -40,7 +40,7 @@ const NewCardForm = (props) => {
         for( const item of boards) {
             // add own board to top of list
             if (item.board.name !== props.boardName) {
-                boardSelect.push(<option value = {item.board.name}>{item.board.name} {item.board.name === formData.boardName ? '(selected board)' : ''}</option>);
+                boardSelect.push(<option key = {item.board.name} value = {item.board.name}>{item.board.name} {item.board.name === formData.boardName ? '(selected board)' : ''}</option>);
             }
         }
         

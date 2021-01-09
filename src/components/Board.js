@@ -27,7 +27,7 @@ const Board = (props) => {
         setErrorMessage(['Failed to retrieve cards.']);
         console.log(error.message);
       });
-      
+
     axios.get(BASE_URL)
       .then( (response) => {
         // get list of boards
@@ -38,7 +38,7 @@ const Board = (props) => {
         setErrorMessage(['Failed to retrieve boards.']);
         console.log(error.message);
       });
-  },[]);
+  },[cardsList]);
 
   // add a card to cardsList 
   const addCard = (card) => {
