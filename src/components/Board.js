@@ -73,13 +73,15 @@ const Board = (props) => {
   }
 
   return (
-    <div className = 'board'>
-      <section className = 'validation-errors-display'>
-        <ul className = "validation-errors-display__list">
-          {errorMessage ? allErrors(errorMessage) : ''}
-        </ul> 
-      </section>  
-      {allCards(cardsList, deleteCard)}
+    <div>
+      <article className = 'validation-errors-display'>
+        <ul className = 'validation-errors-display__list'>
+            {errorMessage ? allErrors(errorMessage) : ''}
+        </ul>
+      </article> 
+      <section className = 'board'>
+        {allCards(cardsList, deleteCard)}
+      </section>
     </div>
   )
 };

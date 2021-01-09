@@ -6,6 +6,7 @@
 .validation-errors-display {
   text-align: center;
   margin-bottom: 2em;
+  background-color: #ffdbd9;
 }
 
 .validation-errors-display__list {
