@@ -47,9 +47,7 @@ const Board = (props) => {
     .then( (response) => {
       // only add card to board if the post is for this particular board
       if(card.boardName === props.boardName) {
-        const newId = newCardList.reduce((accumulator, currentStudent)=> {
-          return Math.max(accumulator, currentStudent.id);
-        }, 0) + 1
+        const newId = response.data.card.id;
     
         newCardList.push({
           card: {
@@ -59,14 +57,14 @@ const Board = (props) => {
           }  
         })
       }
-
+      setCardsList(newCardList);
     })
     .catch( (error) => {
-      setErrorMessage(['Failed to retrieve boards.']);
+      setErrorMessage(['Failed to add card.']);
       console.log(error.message);
     });
 
-    setCardsList(newCardList);
+
   }
 
   // delete a card from cardsList
