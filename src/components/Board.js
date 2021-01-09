@@ -27,6 +27,10 @@ const Board = (props) => {
       });
   },[]);
 
+  // add a card to cardsList 
+  const addCard = () => {
+
+  }
 
   // delete a card from cardsList
   const deleteCard = (id) => {
@@ -79,6 +83,7 @@ const Board = (props) => {
             {errorMessage ? allErrors(errorMessage) : ''}
         </ul>
       </article> 
+      <NewCardForm url = {CARDS_URL} boardName = {props.boardName} addCard = {addCard}/>
       <section className = 'board'>
         {allCards(cardsList, deleteCard)}
       </section>
