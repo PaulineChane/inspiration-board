@@ -25,7 +25,11 @@ const NewCardForm = (props) => {
             emojiSelect.push(<option value = {emojiText}> {emojiText}</option>);
         }
 
-        return emojiSelect;
+        return (<select id = 'emoji'
+                name = 'emoji' 
+                value = {formData.emoji}
+                className = 'new-card-form__form-select' 
+                onSelect = {onFieldChange}> {emojiSelect} </select>);
     }
 
         // for drop-down board options
@@ -36,15 +40,17 @@ const NewCardForm = (props) => {
         for( const item of boards) {
             // add own board to top of list
             if (item.board.name !== props.boardName) {
-                boardSelect.push(<option value = {item.board.name}> {item.board.name}</option>);
+                boardSelect.push(<option value = {item.board.name}>{item.board.name} {item.board.name === formData.boardName ? '(selected board)' : ''}</option>);
             }
         }
         
         boardSelect.unshift(<option value = {props.boardName}> {props.boardName} (current board)</option>);
 
-        console.log(boardSelect)
-
-        return boardSelect;
+        return(<select id = 'boardName'
+                    name = 'boardName'
+                    value = {formData.boardName}
+                    className = 'new-card-form__form-select'
+                    onSelect = {onFieldChange}> {boardSelect} </select>);
     }
     
     // for submit button 
@@ -65,22 +71,15 @@ const NewCardForm = (props) => {
                 <textarea id = 'text'
                         name = 'text' 
                         value = {formData.text}
+                        placeholder = "inspire your board or someone else's!"
                         className = 'new-card-form__form-textarea' 
                         onChange = {onFieldChange}></textarea>
 
-                <label className = 'new-card-form__form-label'>emoji {emoji ? emoji.getUnicode(formData.emoji) : ''}</label>
-                <select id = 'emoji'
-                        name = 'emoji' 
-                        value = {formData.emoji}
-                        className = 'new-card-form__form-select' 
-                        onSelect = {onFieldChange}> {emojiList(EMOJI_LIST)} </select>
+                <label className = 'new-card-form__form-label'>{emoji ? emoji.getUnicode(formData.emoji) : ''} emoji</label>
+                {emojiList(EMOJI_LIST)}
 
                 <label className = 'new-card-form__form-label'>board</label>
-                <select id = 'boardName'
-                        name = 'boardName'
-                        value = {formData.boardName}
-                        className = 'new-card-form__form-select'
-                        onSelect = {onFieldChange}> {boardList(props.boards)} </select>
+                {boardList(props.boards)}
 
                 <input type='submit' value = 'submit card' className = 'new-card-form__form-button' />
             </form>

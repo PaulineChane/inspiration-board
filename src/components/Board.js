@@ -42,18 +42,29 @@ const Board = (props) => {
   // add a card to cardsList 
   const addCard = (card) => {
     const newCardList  = [...cardsList];
+    const post = {text: card.text, emoji: card.emoji}
+    axios.post(`${BASE_URL}${card.boardName}/cards`, post)
+    .then( (response) => {
+      // only add card to board if the post is for this particular board
+      if(card.boardName === props.boardName) {
+        const newId = newCardList.reduce((accumulator, currentStudent)=> {
+          return Math.max(accumulator, currentStudent.id);
+        }, 0) + 1
+    
+        newCardList.push({
+          card: {
+            id: newId,
+            text: card.text, 
+            emoji: card.emoji,
+          }  
+        })
+      }
 
-    const newId = newCardList.reduce((accumulator, currentStudent)=> {
-      return Math.max(accumulator, currentStudent.id);
-    }, 0) + 1
-
-    newCardList.push({
-      card: {
-        id: newId,
-        text: card.text, 
-        emoji: card.emoji,
-      }  
     })
+    .catch( (error) => {
+      setErrorMessage(['Failed to retrieve boards.']);
+      console.log(error.message);
+    });
 
     setCardsList(newCardList);
   }
