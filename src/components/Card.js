@@ -7,18 +7,18 @@ import './Card.css';
 const Card = (props) => {
   return (
     <div className="card">
-      <article className = "card__content">
-        <h2 className = "card__content-text">{props.text}</h2>
-        <p className = "card__content-emoji">{props.emoji ? emoji.getUnicode(props.emoji) : ''}</p>
-      </article>
       <button className = "card__delete"> delete</button>
+      <section className = "card__content">
+        <h2 className = "card__content-text">{props.text}</h2>
+        <p className = "card__content-emoji">{props.emojiText ? emoji.getUnicode(props.emojiText) : ''}</p>
+      </section>
     </div>
   )
 }
 
 Card.propTypes = {
   text: PropTypes.string.isRequired,
-  emoji: PropTypes.string.isRequired
+  emojiText: PropTypes.string.isRequired
 };
 
 export default Card;
