@@ -31,8 +31,8 @@ const Board = (props) => {
     
     let cardsList = [];
 
-    for(const card of cards) {
-      cardsList.push(<Card text={card.card ? card.card.text : card.text} emojiText={card.card ? card.card.emoji : card.emoji}/>);
+    for(const item of cards) {
+      cardsList.push(<Card text={item.card ? item.card.text : item.text} emojiText={item.card ? item.card.emoji : item.emoji}/>);
     }
     return cardsList;
   }
@@ -54,7 +54,7 @@ const Board = (props) => {
           {errorMessage ? allErrors(errorMessage) : ''}
         </ul> 
       </section>  
-      {allCards(CARD_DATA.cards)}
+      {allCards(cardsList)}
     </div>
   )
 };
