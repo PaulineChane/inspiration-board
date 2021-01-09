@@ -11,10 +11,11 @@ const Board = (props) => {
 
   const [cardsList, setCardsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const BASE_URL = props.url;
+  const CARDS_URL = props.url.replace('boards', 'cards')
   // useEffect to get cards
   useEffect(() => {
-    axios.get(`${props.url}${props.boardName}/cards`)
+    axios.get(`${BASE_URL}${props.boardName}/cards`)
       .then( (response) => {
         // get list of cards
         const apiCardsList = response.data;
@@ -33,7 +34,7 @@ const Board = (props) => {
     for (const item of cardsList) {
       // cardsList is pulled from the API, meaning anything in cardsList should ideally have a matching id
       if(id === item.card.id) {
-        axios.delete(`${props.url}${props.boardName}/cards/${id}`)
+        axios.delete(`${CARDS_URL}/${id}`)
           // if successful, deleted, send confirmation to console
           .then((response) => {
             console.log(`Card ${id} successfully deleted`);

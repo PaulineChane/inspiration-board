@@ -23,7 +23,7 @@ const Card = (props) => {
 Card.propTypes = {
   text: PropTypes.string, 
   emoji: PropTypes.string,
-  deleteCard: PropTypes.func.isRequired
+  deleteCard: PropTypes.func.isRequired,
 };
 
 export default Card;
