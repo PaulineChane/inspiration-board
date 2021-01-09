@@ -26,13 +26,37 @@ const Board = (props) => {
       });
   },[]);
 
-  // for hard-coded data
-  const allCards = (cards) => {
+
+  // delete a card from cardsList
+  const deleteCard = (id) => {
+    let newCardsList = [];
+    for (const item of cardsList) {
+      // cardsList is pulled from the API, meaning anything in cardsList should ideally have a matching id
+      if(id === item.card.id) {
+        axios.delete(`${props.url}${props.boardName}/cards/${id}`)
+          // if successful, deleted, send confirmation to console
+          .then((response) => {
+            console.log(`Card ${id} successfully deleted`);
+          })
+          .catch((error) => {
+            // don't add the card back in -- likely this card was deleted from the api after components mounted
+            setErrorMessage([`Could not delete card ${id}.`]);
+          });
+      } else {
+        newCardsList.push(item);
+      }
+    }
+
+    setCardsList(newCardsList);
+  }
+
+  // for API data ONLY 
+  const allCards = (cards, deleteCard) => {
     
     let cardsList = [];
 
-    for(const [i, item] of cards.entries()) {
-      cardsList.push(<Card id = {item.card ? item.card.id : i} text={item.card ? item.card.text : item.text} emojiText={item.card ? item.card.emoji : item.emoji}/>);
+    for(const item of cards) {
+      cardsList.push(<Card id = {item.card.id} text={item.card.text} emojiText={item.card.emoji} deleteCard = {deleteCard}/>);
     }
     return cardsList;
   }
@@ -54,7 +78,7 @@ const Board = (props) => {
           {errorMessage ? allErrors(errorMessage) : ''}
         </ul> 
       </section>  
-      {allCards(cardsList)}
+      {allCards(cardsList, deleteCard)}
     </div>
   )
 };
