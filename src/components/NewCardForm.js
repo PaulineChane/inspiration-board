@@ -22,7 +22,7 @@ const NewCardForm = (props) => {
         let emojiSelect = []
 
         for( const emojiText of emojis) {
-            emojiSelect.push(<option value = {emojiText}> {emojiText}</option>);
+            emojiSelect.push(<option key = {emojiText} value = {emojiText}> {emojiText}</option>);
         }
 
         return (<select id = 'emoji'
@@ -44,7 +44,7 @@ const NewCardForm = (props) => {
             }
         }
         
-        boardSelect.unshift(<option value = {props.boardName}> {props.boardName} (current board)</option>);
+        boardSelect.unshift(<option key = {props.boardName} value = {props.boardName}> {props.boardName} (current board)</option>);
 
         return(<select id = 'boardName'
                     name = 'boardName'
