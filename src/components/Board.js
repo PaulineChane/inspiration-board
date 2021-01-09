@@ -14,10 +14,11 @@ const Board = (props) => {
 
   // useEffect to get cards
   useEffect(() => {
-    axios.get(`${props.url}/${props.boardName}/cards`)
+    axios.get(`${props.url}${props.boardName}/cards`)
       .then( (response) => {
         // get list of cards
         const apiCardsList = response.data;
+        console.log(response.data);
         setCardsList(apiCardsList);
       })
       .catch( (error) => {
