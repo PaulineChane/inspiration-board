@@ -32,7 +32,7 @@ const Board = (props) => {
     let cardsList = [];
 
     for(const card of cards) {
-      cardsList.push(<Card text={card.text} emojiText={card.emoji}/>);
+      cardsList.push(<Card text={card.card ? card.card.text : card.text} emojiText={card.card ? card.card.emoji : card.emoji}/>);
     }
     return cardsList;
   }
