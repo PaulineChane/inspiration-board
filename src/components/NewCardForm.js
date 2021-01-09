@@ -40,7 +40,9 @@ const NewCardForm = (props) => {
             }
         }
         
-        boardSelect.unshift(props.boardName);
+        boardSelect.unshift(<option value = {props.boardName}> {props.boardName} (current board)</option>);
+
+        console.log(boardSelect)
 
         return boardSelect;
     }
