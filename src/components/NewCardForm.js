@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect} from 'react';
+import React, { Component, useState} from 'react';
 import PropTypes from 'prop-types';
 import emoji from 'emoji-dictionary';
 import './NewCardForm.css';
@@ -29,7 +29,7 @@ const NewCardForm = (props) => {
                 name = 'emoji' 
                 value = {formData.emoji}
                 className = 'new-card-form__form-select' 
-                onSelect = {onFieldChange}> {emojiSelect} </select>);
+                onChange = {onFieldChange}> {emojiSelect} </select>);
     }
 
         // for drop-down board options
@@ -50,7 +50,7 @@ const NewCardForm = (props) => {
                     name = 'boardName'
                     value = {formData.boardName}
                     className = 'new-card-form__form-select'
-                    onSelect = {onFieldChange}> {boardSelect} </select>);
+                    onChange = {onFieldChange}> {boardSelect} </select>);
     }
     
     // for submit button 
@@ -86,5 +86,15 @@ const NewCardForm = (props) => {
         </section>
     );
 }
+
+NewCardForm.propTypes = {
+    url: PropTypes.string.isRequired,
+    boardName: PropTypes.string.isRequired,
+    addCard: PropTypes.func.isRequired,
+    boards: PropTypes.arrayOf(PropTypes.shape({board: PropTypes.shape(
+        {id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired}
+    )})).isRequired
+};
 
 export default NewCardForm;
