@@ -28,8 +28,22 @@ const Board = (props) => {
   },[]);
 
   // add a card to cardsList 
-  const addCard = () => {
+  const addCard = (card) => {
+    const newCardList  = [...cardsList];
 
+    const newId = newCardList.reduce((accumulator, currentStudent)=> {
+      return Math.max(accumulator, currentStudent.id);
+    }, 0) + 1
+
+    newCardList.push({
+      card: {
+        id: newId,
+        text: card.text, 
+        emoji: card.emoji,
+      }  
+    })
+
+    setCardsList(newCardList);
   }
 
   // delete a card from cardsList
