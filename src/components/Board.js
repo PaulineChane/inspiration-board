@@ -11,10 +11,28 @@ const Board = (props) => {
 
   const [cardsList, setCardsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [allBoards, updateBoards] = useState([]);
 
   const BASE_URL = props.url;
   const CARDS_URL = props.url.replace('boards', 'cards')
+
+  // jest really didn't like when i wrapped this in useEffect, so i'm pulling board info here
+  const [allBoards, updateBoards] = useState([]);
+  
+  useEffect(() => {
+    axios.get(BASE_URL)
+      .then( (response) => {
+        // get list of boards
+        updateBoards(response.data);
+      })
+      .catch( (error) => {
+        setErrorMessage(['Failed to retrieve boards.']);
+        console.log(error.message);
+      });
+
+      return (()=>{})
+  }, [allBoards])
+
+
   // useEffect to get cards
   useEffect(() => {
     axios.get(`${BASE_URL}${props.boardName}/cards`)
@@ -28,16 +46,7 @@ const Board = (props) => {
         console.log(error.message);
       });
 
-    axios.get(BASE_URL)
-      .then( (response) => {
-        // get list of boards
-        const apiBoardsList = response.data;
-        updateBoards(apiBoardsList);
-      })
-      .catch( (error) => {
-        setErrorMessage(['Failed to retrieve boards.']);
-        console.log(error.message);
-      });
+    return (()=>{});
   },[cardsList]);
 
   // add a card to cardsList 
