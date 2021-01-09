@@ -11,6 +11,8 @@ const Board = (props) => {
 
   const [cardsList, setCardsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [allBoards, updateBoards] = useState([]);
+
   const BASE_URL = props.url;
   const CARDS_URL = props.url.replace('boards', 'cards')
   // useEffect to get cards
@@ -22,7 +24,17 @@ const Board = (props) => {
         setCardsList(apiCardsList);
       })
       .catch( (error) => {
-        setErrorMessage(error.message);
+        setErrorMessage(['Failed to retrieve cards.']);
+        console.log(error.message);
+      });
+    axios.get(BASE_URL)
+      .then( (response) => {
+        // get list of boards
+        const apiBoardsList = response.data;
+        updateBoards(apiBoardsList);
+      })
+      .catch( (error) => {
+        setErrorMessage(['Failed to retrieve boards.']);
         console.log(error.message);
       });
   },[]);
@@ -97,7 +109,7 @@ const Board = (props) => {
             {errorMessage ? allErrors(errorMessage) : ''}
         </ul>
       </article> 
-      <NewCardForm url = {CARDS_URL} boardName = {props.boardName} addCard = {addCard}/>
+      <NewCardForm url = {CARDS_URL} boardName = {props.boardName} addCard = {addCard} boards = {allBoards}/>
       <section className = 'board'>
         {allCards(cardsList, deleteCard)}
       </section>
