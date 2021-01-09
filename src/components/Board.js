@@ -8,14 +8,25 @@ import NewCardForm from './NewCardForm';
 import CARD_DATA from '../data/card-data.json';
 
 const Board = () => {
+  const allCards = (cards) => {
+    
+    let cardsList = [];
+
+    for(const card of cards) {
+      cardsList.push(<Card text={card.text} emojiText={card.emoji}/>);
+    }
+    return cardsList;
+  }
+
   return (
-    <div>
-      Board
+    <div className = 'board'>
+      {allCards(CARD_DATA.cards)}
     </div>
   )
 };
 Board.propTypes = {
-
+  url: PropTypes.string.isRequired,
+  boardName: PropTypes.string.isRequired
 };
 
 export default Board;
