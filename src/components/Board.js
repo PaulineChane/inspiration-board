@@ -28,7 +28,7 @@ const Board = (props) => {
       })
       .catch( (error) => {
         setErrorMessage(['Failed to retrieve boards.']);
-        console.log(error.message);
+        // console.log(error.message);
       });
 
       return (()=>{})
@@ -41,6 +41,7 @@ const Board = (props) => {
         // get list of cards
         const apiCardsList = response.data;
         setCardsList(apiCardsList);
+        setErrorMessage(null);
       })
       .catch( (error) => {
         setErrorMessage(['Failed to retrieve cards.']);
@@ -50,7 +51,6 @@ const Board = (props) => {
     return (()=>{});
   },[currentBoard, BASE_URL]);
 
-  // add a card to cardsList 
   const addCard = (card) => {
     const newCardList  = [...cardsList];
     const post = {text: card.text, emoji: card.emoji}
@@ -69,6 +69,7 @@ const Board = (props) => {
         })
       }
       setCardsList(newCardList);
+      setErrorMessage(null);
     })
     .catch( (error) => {
       setErrorMessage(['Failed to add card.']);
@@ -88,6 +89,7 @@ const Board = (props) => {
           // if successful, deleted, send confirmation to console
           .then((response) => {
             console.log(`Card ${id} successfully deleted`);
+            setErrorMessage(null);
           })
           .catch((error) => {
             // don't add the card back in -- likely this card was deleted from the api after components mounted
