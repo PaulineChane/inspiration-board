@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -9,7 +9,8 @@ import BoardList from './BoardList';
 // import CARD_DATA from '../data/card-data.json';
 
 const Board = (props) => {
-
+// jest really didn't like when i wrapped this in useEffect, so i'm pulling board info here
+  const [allBoards, updateBoards] = useState([]);
   const [cardsList, setCardsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [currentBoard, updateBoard] = useState(props.boardName);
@@ -17,37 +18,75 @@ const Board = (props) => {
   const BASE_URL = props.url;
   const CARDS_URL = props.url.replace('boards', 'cards')
 
-  // jest really didn't like when i wrapped this in useEffect, so i'm pulling board info here
-  const [allBoards, updateBoards] = useState([]);
-  
-  useEffect(() => {
-    axios.get(BASE_URL)
-      .then( (response) => {
-        // get list of boards
-        updateBoards(response.data);
-      })
-      .catch( (error) => {
-        setErrorMessage(['Failed to retrieve boards.']);
-        console.log(error.message);
-      });
 
-  }, [currentBoard, BASE_URL])
+  const getBoardsAsync = useCallback(() => {
+    return(axios.get(BASE_URL));
+    // .then( (response) => {
+    //   // get list of boards
+    //   updateBoards(response.data);
+    // })
+    // .catch( (error) => {
+    //   setErrorMessage(['Failed to retrieve boards.']);
+    //   console.log(error.message);
+    // }));
+  },[BASE_URL])
+
+  const getCardsAsync = useCallback(() => {
+    return(axios.get(`${BASE_URL}${currentBoard}/cards`));
+    // .then( (response) => {
+    //   // get list of cards
+    //   const apiCardsList = response.data;
+    //   setCardsList(apiCardsList);
+    //   setErrorMessage(null);
+    // })
+    // .catch( (error) => {
+    //   setErrorMessage(['Failed to retrieve cards.']);
+    //   console.log(error.message);
+    // }));
+  },[currentBoard, BASE_URL])
+
+
+
+  useEffect(() => {
+    Promise.all([getBoardsAsync(), getCardsAsync()])
+    .then(([promiseBoards, promiseCards])=>{
+      // get list of boards
+      updateBoards(promiseBoards.data);
+      setCardsList(promiseCards.data);
+      setErrorMessage(null);
+    })
+    .catch((error)=>{
+      setErrorMessage(['Failed to retrieve cards or boards.']);
+      console.log(error.message);
+    });
+
+    // axios.get(BASE_URL)
+    //   .then( (response) => {
+    //     // get list of boards
+    //     updateBoards(response.data);
+    //   })
+    //   .catch( (error) => {
+    //     setErrorMessage(['Failed to retrieve boards.']);
+    //     console.log(error.message);
+    //   });
+
+  }, [getBoardsAsync, getCardsAsync])
 
   // useEffect to get cards
-  useEffect(() => {
-    axios.get(`${BASE_URL}${currentBoard}/cards`)
-      .then( (response) => {
-        // get list of cards
-        const apiCardsList = response.data;
-        setCardsList(apiCardsList);
-        setErrorMessage(null);
-      })
-      .catch( (error) => {
-        setErrorMessage(['Failed to retrieve cards.']);
-        console.log(error.message);
-      });
+  // useEffect(() => {
+  //   // axios.get(`${BASE_URL}${currentBoard}/cards`)
+  //   //   .then( (response) => {
+  //   //     // get list of cards
+  //   //     const apiCardsList = response.data;
+  //   //     setCardsList(apiCardsList);
+  //   //     setErrorMessage(null);
+  //   //   })
+  //   //   .catch( (error) => {
+  //   //     setErrorMessage(['Failed to retrieve cards.']);
+  //   //     console.log(error.message);
+  //   //   });
 
-  },[currentBoard, BASE_URL]);
+  // },[currentBoard, BASE_URL]);
 
   const addCard = (card) => {
     const newCardList  = [...cardsList];
