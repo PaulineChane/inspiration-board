@@ -5,12 +5,14 @@ import axios from 'axios';
 import './Board.css';
 import Card from './Card';
 import NewCardForm from './NewCardForm';
+import BoardList from './BoardList';
 // import CARD_DATA from '../data/card-data.json';
 
 const Board = (props) => {
 
   const [cardsList, setCardsList] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [currentBoard, updateBoard] = useState(props.boardName);
 
   const BASE_URL = props.url;
   const CARDS_URL = props.url.replace('boards', 'cards')
@@ -30,12 +32,11 @@ const Board = (props) => {
       });
 
       return (()=>{})
-  }, [allBoards])
-
+  }, [currentBoard, BASE_URL])
 
   // useEffect to get cards
   useEffect(() => {
-    axios.get(`${BASE_URL}${props.boardName}/cards`)
+    axios.get(`${BASE_URL}${currentBoard}/cards`)
       .then( (response) => {
         // get list of cards
         const apiCardsList = response.data;
@@ -47,7 +48,7 @@ const Board = (props) => {
       });
 
     return (()=>{});
-  },[cardsList]);
+  },[currentBoard, BASE_URL]);
 
   // add a card to cardsList 
   const addCard = (card) => {
@@ -56,7 +57,7 @@ const Board = (props) => {
     axios.post(`${BASE_URL}${card.boardName}/cards`, post)
     .then( (response) => {
       // only add card to board if the post is for this particular board
-      if(card.boardName === props.boardName) {
+      if(card.boardName === currentBoard) {
         const newId = response.data.card.id;
     
         newCardList.push({
@@ -111,6 +112,12 @@ const Board = (props) => {
     return cardsList;
   }
 
+  // if currentBoard changed
+
+  const changeCurrentBoard = (boardName) => {  
+    updateBoard(boardName);
+  }
+
   // for error message
   const allErrors = (errorData) => {
     const errors = [];
@@ -128,7 +135,8 @@ const Board = (props) => {
             {errorMessage ? allErrors(errorMessage) : ''}
         </ul>
       </article> 
-      <NewCardForm url = {CARDS_URL} boardName = {props.boardName} addCard = {addCard} boards = {allBoards}/>
+      <BoardList currentBoard ={currentBoard} boards = {allBoards} changeCurrentBoard = {changeCurrentBoard}/>
+      <NewCardForm url = {CARDS_URL} boardName = {currentBoard} addCard = {addCard} boards = {allBoards}/>
       <section className = 'board'>
         {allCards(cardsList, deleteCard)}
       </section>

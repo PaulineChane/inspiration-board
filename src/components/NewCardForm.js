@@ -25,6 +25,7 @@ const NewCardForm = (props) => {
             emojiSelect.push(<option key = {emojiText} value = {emojiText}> {emojiText}</option>);
         }
 
+        emojiSelect.unshift(<option key = 'empty' value = ''> NONE </option>);
         return (<select id = 'emoji'
                 name = 'emoji' 
                 value = {formData.emoji}
