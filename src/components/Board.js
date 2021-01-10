@@ -18,35 +18,17 @@ const Board = (props) => {
   const BASE_URL = props.url;
   const CARDS_URL = props.url.replace('boards', 'cards')
 
-
+  // function to obtain promises to update states
   const getBoardsAsync = useCallback(() => {
     return(axios.get(BASE_URL));
-    // .then( (response) => {
-    //   // get list of boards
-    //   updateBoards(response.data);
-    // })
-    // .catch( (error) => {
-    //   setErrorMessage(['Failed to retrieve boards.']);
-    //   console.log(error.message);
-    // }));
   },[BASE_URL])
 
   const getCardsAsync = useCallback(() => {
     return(axios.get(`${BASE_URL}${currentBoard}/cards`));
-    // .then( (response) => {
-    //   // get list of cards
-    //   const apiCardsList = response.data;
-    //   setCardsList(apiCardsList);
-    //   setErrorMessage(null);
-    // })
-    // .catch( (error) => {
-    //   setErrorMessage(['Failed to retrieve cards.']);
-    //   console.log(error.message);
-    // }));
   },[currentBoard, BASE_URL])
 
 
-
+  // does not update state until both functions return 
   useEffect(() => {
     Promise.all([getBoardsAsync(), getCardsAsync()])
     .then(([promiseBoards, promiseCards])=>{
@@ -59,34 +41,7 @@ const Board = (props) => {
       setErrorMessage(['Failed to retrieve cards or boards.']);
       console.log(error.message);
     });
-
-    // axios.get(BASE_URL)
-    //   .then( (response) => {
-    //     // get list of boards
-    //     updateBoards(response.data);
-    //   })
-    //   .catch( (error) => {
-    //     setErrorMessage(['Failed to retrieve boards.']);
-    //     console.log(error.message);
-    //   });
-
   }, [getBoardsAsync, getCardsAsync])
-
-  // useEffect to get cards
-  // useEffect(() => {
-  //   // axios.get(`${BASE_URL}${currentBoard}/cards`)
-  //   //   .then( (response) => {
-  //   //     // get list of cards
-  //   //     const apiCardsList = response.data;
-  //   //     setCardsList(apiCardsList);
-  //   //     setErrorMessage(null);
-  //   //   })
-  //   //   .catch( (error) => {
-  //   //     setErrorMessage(['Failed to retrieve cards.']);
-  //   //     console.log(error.message);
-  //   //   });
-
-  // },[currentBoard, BASE_URL]);
 
   const addCard = (card) => {
     const newCardList  = [...cardsList];
