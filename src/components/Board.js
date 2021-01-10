@@ -28,10 +28,9 @@ const Board = (props) => {
       })
       .catch( (error) => {
         setErrorMessage(['Failed to retrieve boards.']);
-        // console.log(error.message);
+        console.log(error.message);
       });
 
-      return (()=>{})
   }, [currentBoard, BASE_URL])
 
   // useEffect to get cards
@@ -48,7 +47,6 @@ const Board = (props) => {
         console.log(error.message);
       });
 
-    return (()=>{});
   },[currentBoard, BASE_URL]);
 
   const addCard = (card) => {
